@@ -3,12 +3,7 @@ import AppReducer from "./AppReducer";
 // initial state
 
 const initialState = {
-  transcations: [
-    { id: 1, text: "Flower", amount: -20 },
-    { id: 2, text: "Salary", amount: 300 },
-    { id: 3, text: "Book", amount: -10 },
-    { id: 4, text: "Camera", amount: 150 }
-  ]
+  transcations: []
 };
 
 // create context
@@ -17,8 +12,26 @@ export const GlobalContext = createContext(initialState);
 // provider Component
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
+  function deleteTranscation(id) {
+    dispatch({
+      type: "DELETE_TRANSCATION",
+      payload: id
+    });
+  }
+  function addTranscation(transcation) {
+    dispatch({
+      type: "ADD_TRANSCATION",
+      payload: transcation
+    });
+  }
   return (
-    <GlobalContext.Provider value={{ transcations: state.transcations }}>
+    <GlobalContext.Provider
+      value={{
+        transcations: state.transcations,
+        deleteTranscation,
+        addTranscation
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );
